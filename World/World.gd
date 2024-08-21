@@ -1,17 +1,34 @@
 extends Node2D
 
+#var borders = Rect2(1, 1, 38, 21)
+var enemy = preload("res://Scenes/flying.tscn")
+var spike = preload("res://Scenes/spike.tscn")
 
-@onready var tileMap = $MapCreator
+@export var player : CharacterBody2D
+#@onready var enemy : CharacterBody2D = $enemy
+@export var tileMap : TileMap
+@export var deck_ui : CanvasLayer
 var starting_postiion
 
+var stat_dict = {
+	"attack_power": 10,
+	"health": 100,
+	"bullets": 1,
+	"movement_speed": 200,
+	"lifesteal": 0,
+	"additional_abilities": {
+		"bomb_area": false,
+		"pull_closer": false,
+		"reflect_bullets": false,
+		"blast_bullets": false 
+	}
+}
 
 func _ready():
 	randomize()
 	generate_level()
-	
-func get_tilemap():
-	return find_child("MapCreator")
-	
+	deck_ui.hide()
+
 func generate_level():
 	
 	var map_details = {}
@@ -26,10 +43,17 @@ func generate_level():
 	starting_postiion = map.front()
 	var end_position = walker.get_end_room().position
 	walker.queue_free()
-	print(map)
+
 	tileMap.set_cells_terrain_connect(0, map, 0, -1)
-	#for i in map:
-		#tileMap.set_cell(0, i, 1, Vector2(0 , 2))
+	for i in map:
+		tileMap.set_cell(0, i, 1, Vector2(0 , 2))
+		
+	for i in range(20):
+		var enemyi = enemy.instantiate()
+		add_child(enemyi)
+		var ran_coor = map.pick_random()
+		enemyi.position = self.to_global(tileMap.map_to_local(ran_coor))
+		enemyi.player = player
 		
 	var rooms = walker.return_rooms()
 	for room in rooms:
@@ -58,14 +82,14 @@ func generate_level():
 		
 #	tileMap.set_cells_terrain_connect(0, al_room, 0, -1)
 	
-	#for i in map_details.keys():
-		#if (map_details[i].left and map_details[i].right) and map_details[i].down and not map_details[i].up:
-			#var scene_instance = spike.instantiate()
-			#add_child(scene_instance)
-			#scene_instance.position = (i + Vector2(0.75,0.5))* 32
-##			tileMap.set_cell(0, i, 1, Vector2(0 , 5))
-##			scene_instance.position = i*32
-	#var x = randi()%20 +4
+	for i in map_details.keys():
+		if (map_details[i].left and map_details[i].right) and map_details[i].down and not map_details[i].up:
+			var scene_instance = spike.instantiate()
+			add_child(scene_instance)
+			scene_instance.position = (i + Vector2(0.75,0.5))* 32
+#			tileMap.set_cell(0, i, 1, Vector2(0 , 5))
+#			scene_instance.position = i*32
+	var x = randi()%20 +4
 #	player.position = starting_postiion*32
 #		tileMap.set_cell(0, starting_postiion, 3, Vector2(14 , 4)) #use this somehow	
 #		tileMap.set_cell(0, end_position, 3, Vector2(12 , 4)) #use this somehow	
@@ -77,7 +101,7 @@ func _input(event):
 	if event.is_action_pressed("enter"):
 		reload_level()
 
-#func _on_static_body_2d_show_ui(show):
-	#if show:
-		#get_tree().paused = true
-		#deck_ui.show()
+func _on_static_body_2d_show_ui(show):
+	if show:
+		get_tree().paused = true
+		deck_ui.show()

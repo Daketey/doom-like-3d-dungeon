@@ -1,10 +1,5 @@
 res://World.tscn
-res://Player.gd
-res://World.gd
-res://Map.gd
-res://Cell.gd
-res://Player.tscn
 res://Cell.tscn
 res://Map.tscn
-res://CharacterBody3D.gd
-res://Globals.gd
+res://Map.gd
+res://World.gd

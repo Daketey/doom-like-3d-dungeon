@@ -2,7 +2,7 @@ extends Node3D
 
 const Cell = preload("res://Cell.tscn")
 
-@export var Map : PackedScene
+@export var Map : Node2D
 
 var cells = []
 
@@ -17,11 +17,10 @@ func _ready():
 	generate_map()
 
 func generate_map():
-	if not Map is PackedScene: return
-	var map = Map.instantiate()
-	var tileMap = map.get_tilemap()
+	#if not Map is PackedScene: return
+	var tileMap = Map.get_tilemap()
 	var used_tiles = tileMap.get_used_cells(0)
-	map.free() # We don't need it now that we have the tile data
+	Map.free() # We don't need it now that we have the tile data
 	for tile in used_tiles:
 		var cell = Cell.instantiate()
 		add_child(cell)
