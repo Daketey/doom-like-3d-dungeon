@@ -1,0 +1,50 @@
+[gd_scene load_steps=9 format=3 uid="uid://djlroxspqjcaw"]
+
+[ext_resource type="Script" path="res://World.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://035ifbygmtng" path="res://Map.tscn" id="2"]
+[ext_resource type="Script" path="res://CharacterBody3D.gd" id="3_j5u4r"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7x8jf"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_oxmas"]
+sky_material = SubResource("ProceduralSkyMaterial_7x8jf")
+
+[sub_resource type="Environment" id="Environment_q5osd"]
+background_mode = 2
+sky = SubResource("Sky_oxmas")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_cwmyt"]
+dof_blur_far_enabled = true
+dof_blur_near_enabled = true
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8d6sp"]
+height = 1.68303
+
+[node name="World" type="Node3D"]
+script = ExtResource("1")
+Map = ExtResource("2")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_q5osd")
+camera_attributes = SubResource("CameraAttributesPractical_cwmyt")
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+platform_wall_layers = 255
+script = ExtResource("3_j5u4r")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.856166, 0)
+shape = SubResource("CapsuleShape3D_8d6sp")
+
+[node name="Neck" type="Node3D" parent="CharacterBody3D"]
+
+[node name="SpotLight3D" type="SpotLight3D" parent="CharacterBody3D/Neck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.17161, 0.500288)
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D/Neck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.09972, 0)

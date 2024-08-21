@@ -1,0 +1,33 @@
+[gd_scene load_steps=8 format=3 uid="uid://djlroxspqjcaw"]
+
+[ext_resource type="Script" path="res://World.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://035ifbygmtng" path="res://Map.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://bqfjttwgpk75m" path="res://Player.tscn" id="3"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7x8jf"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_oxmas"]
+sky_material = SubResource("ProceduralSkyMaterial_7x8jf")
+
+[sub_resource type="Environment" id="Environment_q5osd"]
+background_mode = 1
+background_color = Color(0.14633, 0.000127414, 0.214842, 1)
+sky = SubResource("Sky_oxmas")
+ambient_light_color = Color(0.366682, 0.000614485, 0.490461, 1)
+tonemap_mode = 2
+ssao_enabled = true
+glow_enabled = true
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_cwmyt"]
+
+[node name="World" type="Node3D"]
+script = ExtResource("1")
+Map = ExtResource("2")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_q5osd")
+camera_attributes = SubResource("CameraAttributesPractical_cwmyt")
+
+[node name="Player" parent="." instance=ExtResource("3")]

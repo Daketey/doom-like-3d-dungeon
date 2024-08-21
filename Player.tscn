@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://bqfjttwgpk75m"]
+
+[ext_resource type="Script" path="res://CharacterBody3D.gd" id="1_3yxie"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8d6sp"]
+height = 1.68303
+
+[node name="CharacterBody3D" type="CharacterBody3D"]
+platform_wall_layers = 255
+script = ExtResource("1_3yxie")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.856166, 0)
+shape = SubResource("CapsuleShape3D_8d6sp")
+
+[node name="Neck" type="Node3D" parent="."]
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Neck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.17161, 0.500288)
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="Neck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.09972, 0)
